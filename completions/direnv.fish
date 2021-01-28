@@ -1,3 +1,9 @@
+function __fish_direnv_directory_or_envrc
+    printf "%s\n" (__fish_complete_directories)
+    set f (commandline -ct)".envrc"
+    test -f "$f" && printf "%s\n" $f
+end
+
 complete -c direnv -l help -d "shows this help"
 complete -c direnv -l version -d "prints the version"
 
@@ -13,3 +19,8 @@ complete -c direnv -xn "__fish_use_subcommand" -a reload -d "triggers an env rel
 complete -c direnv -xn "__fish_use_subcommand" -a status -d "prints some debug status information"
 complete -c direnv -xn "__fish_use_subcommand" -a stdlib -d "Displays the stdlib available in the .envrc execution context"
 complete -c direnv -xn "__fish_use_subcommand" -a version -d "prints the version (2.27.0) or checks that direnv is older than VERSION_AT_LEAST."
+
+complete -c direnv -xn "__fish_seen_subcommand_from allow deny edit" \
+    -a "(__fish_direnv_directory_or_envrc)"
+complete -c direnv -xn "__fish_seen_subcommand_from hook" \
+    -a "bash elvish fish tcsh zsh"
